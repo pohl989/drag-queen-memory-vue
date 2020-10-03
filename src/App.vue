@@ -1,7 +1,6 @@
 <template>
   <div>
-    <p-logo style="height: 100px;" />
-    <the-game />
+    <TheGame />
   </div>
 </template>
 
