@@ -1,13 +1,12 @@
 <template>
-  <div class="hello">
-    THE GAME
-    <TheCard v-for="queen in queens" :key="queen" :queen="queen" />
+  <div class="card-group">
+    <TheCard v-for="queen in displayedCards" :key="queen" :queen="queen" />
   </div>
 </template>
 
 <script>
 import TheCard from "../components/TheCard";
-const requireImages = require.context(`../../public/cards`, false, /\.jpeg$/);
+const requireImages = require.context(`../assets/cards`, false, /\.jpeg$/);
 
 const QUEEN_NAMES = requireImages.keys().map(path =>
   path
@@ -22,31 +21,43 @@ export default {
   data: function() {
     return {
       queens: QUEEN_NAMES,
-      level: "",
+      level: "Easy",
       levels: [
         { level: "Hard", length: 12 },
         { level: "Medium", length: 10 },
         { level: "Easy", length: 5 }
       ]
     };
+  },
+  methods: {
+    shuffle: function(array) {
+      const shuffled = array.sort(function(a, b) {
+        return 0.5 - Math.random();
+      });
+      return Object.values(shuffled);
+    }
+  },
+  computed: {
+    gameSize: function() {
+      return this.levels.find(l => this.level === l["level"])["length"];
+    },
+    queensInGame: function() {
+      return this.shuffle(this.queens).slice(0, this.gameSize);
+    },
+    displayedCards: function() {
+      const doubled = [...this.queensInGame, ...this.queensInGame];
+      return this.shuffle(doubled);
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.card-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 </style>
