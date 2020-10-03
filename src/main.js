@@ -1,4 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 
-createApp(App).mount("#app");
+///globallly register all of the icons
+
+const app = createApp(App);
+
+app.mount("#app");
