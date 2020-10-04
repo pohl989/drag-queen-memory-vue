@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Drag Queen Memory Game</h1>
     <TheGame />
   </div>
 </template>

@@ -3,7 +3,7 @@
     <div class="card" :class="{ 'is-flipped': !flipped }" @click="cardClicked">
       <div
         class="card__face card__face--front"
-        :class="{ matched: matched }"
+        :class="{ matched: matched && !gameOver }"
         :style="{
           backgroundImage: `url(${this.backgroundImage})`
         }"
@@ -37,7 +37,8 @@ export default {
     queen: { type: String, required: true },
     flipped: { type: Boolean, required: true },
     matched: { type: Boolean, required: true },
-    id: { type: String, required: true }
+    id: { type: String, required: true },
+    gameOver: { type: Boolean }
   },
   methods: {
     toggle: function() {
@@ -149,6 +150,8 @@ export default {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
+  border-color: #dce82b;
+  color: #dce82b;
 }
 
 .card__face--front > .success-label {
@@ -164,7 +167,7 @@ export default {
 }
 
 .matched {
-  border-color: #dce82b;
+  filter: grayscale(100%);
 }
 
 .card.correct {
