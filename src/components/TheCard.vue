@@ -1,7 +1,11 @@
 <template>
   <div class="card">
-    <div class="img-c">
-      <img alt="Vue logo" :src="imgSrc" />
+    <!-- <img alt="Queen" :src="imgSrc" /> -->
+    <div
+      class="card-image img-c"
+      :style="{ backgroundImage: `url(${this.backgroundImage})` }"
+    >
+      <p class="success-label">Matched</p>
     </div>
   </div>
 </template>
@@ -15,17 +19,39 @@ export default {
   computed: {
     imgSrc: function() {
       return require(`../assets/cards/${this.queen}.jpeg`);
+    },
+    backgroundImage: function() {
+      return require(`../assets/cards/${this.queen}.jpeg`);
     }
   }
 };
 </script>
 
 <style scoped>
-.img-c img {
-  position: relative;
-  height: 100%;
+.card-image {
+  height: 200px;
+  width: auto;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  flex-direction: column-reverse;
+}
+.img-c {
+  border: 2px solid hsl(330deg 19% 78% / 60%);
+  margin: 5px;
+  border-radius: 1rem;
+}
+
+.card-image > .success-label {
+  z-index: 5;
+  color: #dce82b;
+  background-color: hsl(330deg 19% 60% / 50%);
   width: 100%;
-  overflow: hidden;
+  font-weight: 600;
+  border-top: 2px solid hsl(330deg 19% 78% / 60%);
+  border-bottom: 2px solid hsl(330deg 19% 78% / 60%);
 }
 
 .card {

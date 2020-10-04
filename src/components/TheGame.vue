@@ -21,9 +21,9 @@ export default {
   data: function() {
     return {
       queens: QUEEN_NAMES,
-      level: "Easy",
+      level: "Hard",
       levels: [
-        { level: "Hard", length: 12 },
+        { level: "Hard", length: QUEEN_NAMES ? QUEEN_NAMES.lengths : 1 },
         { level: "Medium", length: 10 },
         { level: "Easy", length: 5 }
       ]
