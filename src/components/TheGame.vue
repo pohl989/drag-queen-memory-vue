@@ -54,14 +54,11 @@ export default {
       queen["flipped"] = !queen["flipped"];
       cards[index] = queen;
       //update selection
-      if (this.selected.includes(selected => selected["id"] === queen["id"])) {
-        debugger;
-      } else {
-        this.selected =
-          this.selected.length === 1 ? [...this.selected, queen] : [queen];
-        if (this.isAMatch(this.selected[1], this.selected[0])) {
-          this.updateMatchedList(this.selected[1], this.selected[0]);
-        }
+      this.selected =
+        this.selected.length === 1 ? [...this.selected, queen] : [queen];
+      //update matches if there is a match
+      if (this.isAMatch(this.selected[1], this.selected[0])) {
+        this.updateMatchedList(this.selected[1], this.selected[0]);
       }
 
       this.cards = cards;
@@ -95,7 +92,7 @@ export default {
       }
     },
     shuffle: function(array) {
-      const shuffled = array.sort(function(a, b) {
+      const shuffled = array.sort(() => {
         return 0.5 - Math.random();
       });
       return Object.values(shuffled);
