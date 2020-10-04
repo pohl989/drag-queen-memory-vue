@@ -1,11 +1,13 @@
 <template>
   <div class="card-group">
     <TheCard
-      v-for="queen in displayedCards"
-      :key="queen"
-      :queen="queen"
-      :flipped="true"
-      :matched="true"
+      v-for="card in cards"
+      :key="card.id"
+      :queen="card.name"
+      :flipped="card.flipped"
+      :matched="card.matched"
+      :id="card.id"
+      @card-click="selectedQueen"
     />
   </div>
 </template>
@@ -27,6 +29,7 @@ export default {
   data: function() {
     return {
       queens: QUEEN_NAMES,
+      cards: [],
       level: "Hard",
       levels: [
         { level: "Hard", length: QUEEN_NAMES ? QUEEN_NAMES.lengths : 1 },
@@ -36,24 +39,55 @@ export default {
     };
   },
   methods: {
+    selectedQueen: function(queen) {
+      const cards = this.cards;
+      const index = cards.findIndex(card => card.id === queen.id);
+      queen["flipped"] = !queen["flipped"];
+      cards[index] = queen;
+      this.cards = cards;
+    },
     shuffle: function(array) {
       const shuffled = array.sort(function(a, b) {
         return 0.5 - Math.random();
       });
       return Object.values(shuffled);
+    },
+    queensInGame: function(gameSize) {
+      return this.shuffle(this.queens).slice(0, gameSize);
+    },
+    gameSize: function(level) {
+      return this.levels.find(l => level === l["level"])["length"];
+    },
+    setUpNewCards: function() {
+      const queens = this.queensInGame(this.gameSize(this.level));
+      const aCards = queens.map(queen => {
+        return {
+          name: queen,
+          id: `${queen}-a`,
+          flipped: false,
+          matched: false
+        };
+      });
+      const bCards = queens.map(queen => {
+        return {
+          name: queen,
+          id: `${queen}-b`,
+          flipped: false,
+          matched: false
+        };
+      });
+      const cards = [...bCards, ...aCards];
+      return this.shuffle(cards);
     }
   },
   computed: {
-    gameSize: function() {
-      return this.levels.find(l => this.level === l["level"])["length"];
-    },
-    queensInGame: function() {
-      return this.shuffle(this.queens).slice(0, this.gameSize);
-    },
     displayedCards: function() {
       const doubled = [...this.queensInGame, ...this.queensInGame];
       return this.shuffle(doubled);
     }
+  },
+  mounted() {
+    this.cards = this.setUpNewCards();
   }
 };
 </script>
@@ -70,9 +104,12 @@ export default {
   grid-template-rows: repeat(30, 110px);
   grid-template-columns: repeat(3, 1fr);
 }
+.card {
+  height: 95px;
+}
 @media (min-width: 770px) {
   .card {
-    padding-top: 33.3%;
+    height: 170px;
   }
   .scene {
     width: auto;

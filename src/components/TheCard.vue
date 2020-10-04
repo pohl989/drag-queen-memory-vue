@@ -1,6 +1,6 @@
 <template>
   <div class="scene">
-    <div class="card" :class="{ 'is-flipped': showImage }" @click="toggle">
+    <div class="card" :class="{ 'is-flipped': !flipped }" @click="cardClicked">
       <div
         class="card__face card__face--front"
         :class="{ matched: matched }"
@@ -8,14 +8,19 @@
           backgroundImage: `url(${this.backgroundImage})`
         }"
       >
-        <p class="success-label">Matched</p>
+        <p v-if="matched" class="success-label">Matched</p>
       </div>
       <div
         class="card__face card__face--back"
         :style="{
-          transform: `rotate(${randomNumber}deg) translate(${randomNumber}px, ${randomNumber}px) rotateY(180deg)`
+          transform: `rotate(${randomNumber()}deg) translate(${randomNumber()}px, ${randomNumber()}px) rotateY(180deg)`
         }"
-      ></div>
+      >
+        <div>
+          <img v-if="!flipped" :src="logoImage" class="card-logo" />
+        </div>
+        <p v-if="!flipped">Pohlfolio</p>
+      </div>
     </div>
   </div>
 </template>
@@ -31,19 +36,32 @@ export default {
   props: {
     queen: { type: String, required: true },
     flipped: { type: Boolean, required: true },
-    matched: { type: Boolean, required: true }
+    matched: { type: Boolean, required: true },
+    id: { type: String, required: true }
   },
   methods: {
     toggle: function() {
       this.showImage = !this.showImage;
+    },
+    cardClicked() {
+      return this.$emit("card-click", {
+        name: this.queen,
+        flipped: this.flipped,
+        matched: this.matched,
+        id: this.id
+      });
+    },
+    randomNumber: function() {
+      //used so every time the card flips it lays slightly random
+      return Math.floor(Math.random() * (8 - -8 + 1) + -8);
     }
   },
   computed: {
-    randomNumber: function() {
-      return Math.floor(Math.random() * (8 - -8 + 1) + -8);
-    },
     imgSrc: function() {
       return require(`../assets/cards/${this.queen}.jpeg`);
+    },
+    logoImage: function() {
+      return require(`../../public/logo.png`);
     },
     backgroundImage: function() {
       return require(`../assets/cards/${this.queen}.jpeg`);
@@ -59,7 +77,6 @@ export default {
 
 .card {
   width: 100%;
-  height: 100%;
   position: relative;
   transition: transform 1s;
   transform-style: preserve-3d;
@@ -73,12 +90,22 @@ export default {
 }
 
 .card__face--front {
-  background: red;
+  background: pink;
 }
 
-.card__face--back {
-  background: blue;
+.card__face.card__face--back {
+  background: #b78a93;
   transform: rotateY(180deg);
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.card__face--back p {
+  margin: 5px;
+  font-family: "Caveat", serif;
+  color: #dce82b;
+  font-size: 1.5rem;
 }
 
 .card.is-flipped {
@@ -87,6 +114,11 @@ export default {
 
 .card {
   transform-origin: center right;
+}
+
+.card-logo {
+  height: 50px;
+  width: auto;
 }
 
 .card.is-flipped {
@@ -121,13 +153,18 @@ export default {
 
 .card__face--front > .success-label {
   z-index: 5;
+  font-family: "Caveat", serif;
   color: #dce82b;
-  background-color: hsl(330deg 19% 60% / 50%);
+  background-color: hsl(330deg 19% 60% / 70%);
   width: 100%;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 500;
   border-top: 2px solid hsl(330deg 19% 78% / 60%);
   border-bottom: 2px solid hsl(330deg 19% 78% / 60%);
+}
+
+.matched {
+  border-color: #dce82b;
 }
 
 .card.correct {
