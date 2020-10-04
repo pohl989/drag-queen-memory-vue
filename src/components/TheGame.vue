@@ -1,6 +1,12 @@
 <template>
   <div class="card-group">
-    <TheCard v-for="queen in displayedCards" :key="queen" :queen="queen" />
+    <TheCard
+      v-for="queen in displayedCards"
+      :key="queen"
+      :queen="queen"
+      :flipped="true"
+      :matched="true"
+    />
   </div>
 </template>
 
@@ -53,21 +59,27 @@ export default {
 </script>
 
 <style>
-.card-image {
-  height: 50px;
-  padding-top: 33.3%;
+.scene {
+  height: 100px;
   width: auto;
+  perspective: 700px;
+  margin: 10px;
 }
 .card-group {
   display: grid;
+  grid-template-rows: repeat(30, 110px);
   grid-template-columns: repeat(3, 1fr);
 }
 @media (min-width: 770px) {
-  .card-image {
-    padding-top: 75%;
+  .card {
+    padding-top: 33.3%;
+  }
+  .scene {
     width: auto;
+    perspective: 800px;
   }
   .card-group {
+    grid-template-rows: repeat(30, 180px);
     grid-template-columns: repeat(4, 1fr);
   }
 }
