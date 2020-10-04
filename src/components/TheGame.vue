@@ -52,12 +52,38 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+.card-image {
+  height: 50px;
+  padding-top: 33.3%;
+  width: auto;
+}
 .card-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (min-width: 770px) {
+  .card-image {
+    padding-top: 75%;
+    width: auto;
+  }
+  .card-group {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 1000px) {
+  .card-group {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .card-group {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+@media (min-width: 1400px) {
+  .card-group {
+    grid-template-columns: repeat(12, 1fr);
+  }
 }
 </style>

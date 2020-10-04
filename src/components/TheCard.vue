@@ -1,8 +1,7 @@
 <template>
   <div class="card">
-    <!-- <img alt="Queen" :src="imgSrc" /> -->
     <div
-      class="card-image img-c"
+      class="card-image"
       :style="{ backgroundImage: `url(${this.backgroundImage})` }"
     >
       <p class="success-label">Matched</p>
@@ -29,7 +28,7 @@ export default {
 
 <style scoped>
 .card-image {
-  height: 200px;
+  height: 100%;
   width: auto;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -37,8 +36,6 @@ export default {
   display: flex;
   flex-direction: column;
   flex-direction: column-reverse;
-}
-.img-c {
   border: 2px solid hsl(330deg 19% 78% / 60%);
   margin: 5px;
   border-radius: 1rem;
@@ -49,15 +46,10 @@ export default {
   color: #dce82b;
   background-color: hsl(330deg 19% 60% / 50%);
   width: 100%;
+  font-size: 1.2rem;
   font-weight: 600;
   border-top: 2px solid hsl(330deg 19% 78% / 60%);
   border-bottom: 2px solid hsl(330deg 19% 78% / 60%);
-}
-
-.card {
-  padding: 1rem;
-  width: 200px;
-  height: auto;
 }
 
 .card.correct {
