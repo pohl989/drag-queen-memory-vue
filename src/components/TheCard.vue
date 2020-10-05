@@ -1,8 +1,12 @@
 <template>
   <div class="scene">
-    <div class="card" :class="{ 'is-flipped': !flipped }" @click="cardClicked">
+    <div
+      class="card"
+      :class="{ 'is-flipped': !flipped, 'game-over': gameOver }"
+      @click="cardClicked"
+    >
       <div
-        class="card__face card__face--front"
+        class="card-face card-face--front"
         :class="{ matched: matched && !gameOver }"
         :style="{
           backgroundImage: `url(${this.backgroundImage})`
@@ -11,7 +15,7 @@
         <p v-if="matched" class="success-label">Matched</p>
       </div>
       <div
-        class="card__face card__face--back"
+        class="card-face card-face--back"
         :style="{
           transform: `rotate(${randomNumber()}deg) translate(${randomNumber()}px, ${randomNumber()}px) rotateY(180deg)`
         }"
@@ -81,40 +85,65 @@ export default {
   position: relative;
   transition: transform 1s;
   transform-style: preserve-3d;
+  transform-origin: center right;
+}
+.card.game-over {
+  animation: spin 15s 1;
 }
 
-.card__face {
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  45% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(0deg) scale(1.1, 1.1);
+  }
+  55% {
+    transform: rotate(360deg);
+  }
+  60% {
+    transform: rotate(360deg) scale(0.9, 0.9);
+  }
+  65% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card-face {
   position: absolute;
   height: 100%;
   width: 100%;
   backface-visibility: hidden;
 }
 
-.card__face--front {
+.card-face--front {
   background: pink;
 }
 
-.card__face.card__face--back {
+.card-face.card-face--back {
   background: #b78a93;
   transform: rotateY(180deg);
   justify-content: center;
   align-content: center;
   flex-direction: column;
+  cursor: pointer;
 }
-
-.card__face--back p {
+.card-face--back p {
   margin: 5px;
   font-family: "Caveat", serif;
   color: #dce82b;
   font-size: 1.5rem;
+  user-select: none;
 }
 
 .card.is-flipped {
   transform: rotateY(180deg);
-}
-
-.card {
-  transform-origin: center right;
 }
 
 .card-logo {
@@ -126,27 +155,22 @@ export default {
   transform: translateX(-100%) rotateY(-180deg);
 }
 
-.card__face:hover,
-.card__face:focus {
+.card-face:hover,
+.card-face:focus {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transform: scale(1.05);
+  transform: scale(1.1, 1.1);
 }
 
-.card-back {
-  background-color: pink;
-}
-
-.card__face {
+.card-face {
   display: flex;
   flex-direction: column;
   flex-direction: column-reverse;
   border: 2px solid hsl(330deg 19% 78% / 60%);
   margin: 5px;
   border-radius: 1rem;
-  cursor: pointer;
 }
 
-.card__face--front {
+.card-face--front {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -154,7 +178,7 @@ export default {
   color: #dce82b;
 }
 
-.card__face--front > .success-label {
+.card-face--front > .success-label {
   z-index: 5;
   font-family: "Caveat", serif;
   color: #dce82b;
@@ -168,6 +192,7 @@ export default {
 
 .matched {
   filter: grayscale(100%);
+  cursor: default;
 }
 
 .card.correct {

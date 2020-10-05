@@ -1,5 +1,5 @@
 <template>
-  <h1>Drag Queen Memory Game</h1>
+  <h1 :class="{ 'game-over-title': gameOver }">Drag Queen Memory Game</h1>
 
   <div v-if="gameOver" class="play-again">
     <button @click="setUpNewCards()">
@@ -144,6 +144,10 @@ export default {
 <style>
 h1 {
   font-size: 1.5rem;
+  font-family: Oswald;
+}
+h1.game-over-title {
+  animation: jiggle 5s 2 ease-in;
 }
 
 @keyframes jiggle {
@@ -161,6 +165,7 @@ h1 {
     transform: scale(1, 1) translate(0, -5px);
   }
 }
+
 .play-again {
   width: 100vw;
   /* background-color: yellow; */
@@ -195,11 +200,27 @@ h1 {
 }
 .card-group {
   display: grid;
-  grid-template-rows: repeat(30, 110px);
+  grid-template-rows: repeat(auto, 110px);
   grid-template-columns: repeat(3, 1fr);
 }
 .card {
-  height: 95px;
+  height: 105px;
+}
+@media (min-width: 650px) {
+  h1 {
+    font-size: 2rem;
+  }
+  .card {
+    height: 120px;
+  }
+  .scene {
+    width: auto;
+    perspective: 800px;
+  }
+  .card-group {
+    grid-template-rows: repeat(30, 130px);
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 @media (min-width: 770px) {
   h1 {
